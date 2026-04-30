@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
-import { translations, type Lang } from "./i18n";
+import { translations, type Lang, type TranslationStrings } from "./i18n";
 
 type Theme = "light" | "dark";
 
@@ -10,7 +10,7 @@ interface AppContextValue {
   lang: Lang;
   setLang: (l: Lang) => void;
   toggleLang: () => void;
-  t: (typeof translations)["en"];
+  t: TranslationStrings;
   dir: "ltr" | "rtl";
 }
 

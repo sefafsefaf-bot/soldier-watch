@@ -1,6 +1,49 @@
 export type Lang = "en" | "ar";
 
-export const translations = {
+export interface TranslationStrings {
+  ministry: string;
+  appTitle: string;
+  appSubtitle: string;
+  classification: string;
+  secureLink: string;
+  active: string;
+  elevated: string;
+  critical: string;
+  offline: string;
+  deployedPersonnel: string;
+  units: string;
+  rosterLive: string;
+  endTransmission: string;
+  returnToCommand: string;
+  personnelFile: string;
+  heartRate: string;
+  bodyTemp: string;
+  bloodPressure: string;
+  vestBattery: string;
+  location: string;
+  liveFeed: string;
+  liveFeedDesc: string;
+  playback: string;
+  last10: string;
+  playbackDesc: string;
+  liveStream: string;
+  connecting: string;
+  linkDown: string;
+  liveLinkError: string;
+  liveLinkErrorDesc: (url: string, err: string) => string;
+  nominal: string;
+  elevatedStatus: string;
+  criticalStatus: string;
+  offlineStatus: string;
+  soldierNotFound: string;
+  backToDashboard: string;
+  bpm: string;
+  mmHg: string;
+  sectorOnline: string;
+  signalLost: string;
+}
+
+export const translations: Record<Lang, TranslationStrings> = {
   en: {
     ministry: "MINISTRY OF DEFENSE · OFFICIAL USE",
     appTitle: "SENTINEL",
@@ -87,6 +130,6 @@ export const translations = {
     sectorOnline: "في الخدمة",
     signalLost: "انقطعت الإشارة",
   },
-} as const;
+};
 
-export type TranslationKey = keyof typeof translations.en;
+export type TranslationKey = keyof TranslationStrings;
