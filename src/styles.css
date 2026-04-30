@@ -71,31 +71,31 @@
 }
 
 :root {
-  --radius: 0.5rem;
-  /* Tactical command-center palette */
-  --background: oklch(0.18 0.015 160);
-  --foreground: oklch(0.95 0.02 140);
-  --card: oklch(0.23 0.02 160);
-  --card-foreground: oklch(0.95 0.02 140);
-  --popover: oklch(0.23 0.02 160);
-  --popover-foreground: oklch(0.95 0.02 140);
-  --primary: oklch(0.78 0.18 145);
-  --primary-foreground: oklch(0.15 0.02 160);
-  --secondary: oklch(0.28 0.02 160);
-  --secondary-foreground: oklch(0.95 0.02 140);
-  --muted: oklch(0.26 0.018 160);
-  --muted-foreground: oklch(0.68 0.03 140);
-  --accent: oklch(0.32 0.04 150);
-  --accent-foreground: oklch(0.95 0.02 140);
-  --destructive: oklch(0.62 0.24 25);
+  --radius: 0.25rem;
+  /* Government / official palette: deep navy + parchment + gold seal */
+  --background: oklch(0.16 0.03 255);
+  --foreground: oklch(0.96 0.01 90);
+  --card: oklch(0.21 0.035 255);
+  --card-foreground: oklch(0.96 0.01 90);
+  --popover: oklch(0.21 0.035 255);
+  --popover-foreground: oklch(0.96 0.01 90);
+  --primary: oklch(0.78 0.13 85); /* official gold */
+  --primary-foreground: oklch(0.18 0.03 255);
+  --secondary: oklch(0.26 0.035 255);
+  --secondary-foreground: oklch(0.96 0.01 90);
+  --muted: oklch(0.24 0.03 255);
+  --muted-foreground: oklch(0.72 0.02 90);
+  --accent: oklch(0.32 0.05 255);
+  --accent-foreground: oklch(0.96 0.01 90);
+  --destructive: oklch(0.58 0.22 25);
   --destructive-foreground: oklch(0.98 0 0);
-  --border: oklch(0.32 0.02 160 / 60%);
-  --input: oklch(0.28 0.02 160);
-  --ring: oklch(0.78 0.18 145);
-  --status-ok: oklch(0.78 0.18 145);
-  --status-warn: oklch(0.82 0.18 75);
-  --status-danger: oklch(0.65 0.25 25);
-  --status-offline: oklch(0.55 0.02 160);
+  --border: oklch(0.42 0.04 90 / 35%);
+  --input: oklch(0.26 0.035 255);
+  --ring: oklch(0.78 0.13 85);
+  --status-ok: oklch(0.74 0.15 150);
+  --status-warn: oklch(0.82 0.16 80);
+  --status-danger: oklch(0.62 0.24 25);
+  --status-offline: oklch(0.55 0.02 255);
   --chart-1: oklch(0.78 0.18 145);
   --chart-2: oklch(0.82 0.18 75);
   --chart-3: oklch(0.65 0.25 25);
@@ -156,10 +156,18 @@
     color: var(--color-foreground);
     font-family: var(--font-sans);
     background-image:
-      linear-gradient(var(--color-border) 1px, transparent 1px),
-      linear-gradient(90deg, var(--color-border) 1px, transparent 1px);
-    background-size: 48px 48px;
-    background-position: -1px -1px;
+      radial-gradient(circle at 20% 0%, oklch(0.28 0.06 255 / 0.5), transparent 55%),
+      radial-gradient(circle at 80% 100%, oklch(0.22 0.04 255 / 0.6), transparent 50%),
+      repeating-linear-gradient(
+        45deg,
+        oklch(0.42 0.04 90 / 0.04) 0 2px,
+        transparent 2px 14px
+      );
+  }
+
+  .gov-seal-bg {
+    background-image:
+      radial-gradient(circle at center, oklch(0.78 0.13 85 / 0.08) 0%, transparent 70%);
   }
 
   .font-mono { font-family: var(--font-mono); }
