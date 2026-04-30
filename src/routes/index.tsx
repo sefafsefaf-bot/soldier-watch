@@ -2,12 +2,15 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Radio, ShieldCheck } from "lucide-react";
 import { soldiers } from "@/data/soldiers";
 import { SoldierCard } from "@/components/SoldierCard";
+import { SettingsToggles } from "@/components/SettingsToggles";
+import { useApp } from "@/lib/app-context";
 
 export const Route = createFileRoute("/")({
   component: Dashboard,
 });
 
 function Dashboard() {
+  const { t } = useApp();
   const counts = soldiers.reduce(
     (acc, s) => ((acc[s.status] = (acc[s.status] ?? 0) + 1), acc),
     {} as Record<string, number>,
@@ -23,39 +26,42 @@ function Dashboard() {
             </div>
             <div>
               <div className="font-mono text-[10px] tracking-[0.35em] text-primary">
-                MINISTRY OF DEFENSE · OFFICIAL USE
+                {t.ministry}
               </div>
               <h1 className="text-xl font-bold uppercase tracking-wider text-foreground">
-                SENTINEL <span className="text-primary">//</span> Vest Telemetry Command
+                {t.appTitle} <span className="text-primary">//</span> {t.appSubtitle}
               </h1>
               <div className="font-mono text-[10px] tracking-widest text-muted-foreground">
-                CLASSIFICATION: RESTRICTED · CLEARANCE LEVEL III
+                {t.classification}
               </div>
             </div>
           </div>
-          <div className="flex items-center gap-2 rounded-sm border border-primary/40 bg-secondary/60 px-3 py-1.5">
-            <Radio className="h-3.5 w-3.5 animate-pulse text-status-ok" />
-            <span className="font-mono text-[11px] tracking-widest text-muted-foreground">
-              SECURE LINK · LIVE
-            </span>
+          <div className="flex items-center gap-3">
+            <div className="hidden items-center gap-2 rounded-sm border border-primary/40 bg-secondary/60 px-3 py-1.5 sm:flex">
+              <Radio className="h-3.5 w-3.5 animate-pulse text-status-ok" />
+              <span className="font-mono text-[11px] tracking-widest text-muted-foreground">
+                {t.secureLink}
+              </span>
+            </div>
+            <SettingsToggles />
           </div>
         </div>
       </header>
 
       <main className="mx-auto max-w-7xl px-6 py-8">
         <section className="mb-8 grid grid-cols-2 gap-3 md:grid-cols-4">
-          <Stat label="Active" value={counts.ok ?? 0} accent="text-status-ok" />
-          <Stat label="Elevated" value={counts.warn ?? 0} accent="text-status-warn" />
-          <Stat label="Critical" value={counts.danger ?? 0} accent="text-status-danger" />
-          <Stat label="Offline" value={counts.offline ?? 0} accent="text-status-offline" />
+          <Stat label={t.active} value={counts.ok ?? 0} accent="text-status-ok" />
+          <Stat label={t.elevated} value={counts.warn ?? 0} accent="text-status-warn" />
+          <Stat label={t.critical} value={counts.danger ?? 0} accent="text-status-danger" />
+          <Stat label={t.offline} value={counts.offline ?? 0} accent="text-status-offline" />
         </section>
 
         <div className="mb-4 flex items-baseline justify-between border-b border-primary/30 pb-2">
           <h2 className="font-mono text-xs tracking-[0.35em] text-primary">
-            DEPLOYED PERSONNEL // {soldiers.length} UNITS
+            {t.deployedPersonnel} // {soldiers.length} {t.units}
           </h2>
           <span className="font-mono text-[10px] tracking-widest text-muted-foreground">
-            ROSTER · LIVE
+            {t.rosterLive}
           </span>
         </div>
 
@@ -67,7 +73,7 @@ function Dashboard() {
       </main>
 
       <footer className="mx-auto max-w-7xl px-6 py-6 text-center font-mono text-[10px] tracking-widest text-muted-foreground">
-        — END OF TRANSMISSION — AUTHORIZED PERSONNEL ONLY —
+        {t.endTransmission}
       </footer>
     </div>
   );

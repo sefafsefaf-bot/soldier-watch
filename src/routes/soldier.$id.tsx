@@ -2,6 +2,7 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import {
   Activity,
   ArrowLeft,
+  ArrowRight,
   BatteryMedium,
   Heart,
   MapPin,
@@ -12,8 +13,10 @@ import {
   User,
   AlertTriangle,
 } from "lucide-react";
-import { soldiers, statusLabel } from "@/data/soldiers";
+import { soldiers } from "@/data/soldiers";
 import { useLiveTelemetry } from "@/hooks/useLiveTelemetry";
+import { SettingsToggles } from "@/components/SettingsToggles";
+import { useApp } from "@/lib/app-context";
 
 export const Route = createFileRoute("/soldier/$id")({
   loader: ({ params }) => {
@@ -22,7 +25,11 @@ export const Route = createFileRoute("/soldier/$id")({
     return { soldier };
   },
   component: SoldierDetail,
-  notFoundComponent: () => (
+  notFoundComponent: NotFound,
+});
+
+function NotFound() {
+  return (
     <div className="flex min-h-screen items-center justify-center">
       <div className="text-center">
         <h1 className="font-mono text-3xl text-foreground">SOLDIER NOT FOUND</h1>
@@ -31,8 +38,8 @@ export const Route = createFileRoute("/soldier/$id")({
         </Link>
       </div>
     </div>
-  ),
-});
+  );
+}
 
 const statusColor: Record<string, string> = {
   ok: "text-status-ok",
@@ -49,6 +56,7 @@ const statusBg: Record<string, string> = {
 
 function SoldierDetail() {
   const { soldier } = Route.useLoaderData();
+  const { t, lang, dir } = useApp();
   const c = statusColor[soldier.status];
   const bg = statusBg[soldier.status];
   const offline = soldier.status === "offline";
@@ -56,20 +64,32 @@ function SoldierDetail() {
   const live = useLiveTelemetry(soldier.liveDataUrl);
   const isLive = !!soldier.liveDataUrl && !!live.data;
 
-  // If live data is available, override the static values
   const heartRate = isLive ? live.data!.heartRate : soldier.heartRate;
   const bodyTemp = isLive ? live.data!.bodyTemp : soldier.bodyTemp;
   const bp = isLive ? live.data!.bp : soldier.bp;
 
+  const name = lang === "ar" ? soldier.nameAr : soldier.name;
+  const rank = lang === "ar" ? soldier.rankAr : soldier.rank;
+  const locationLabel = lang === "ar" ? soldier.location.labelAr : soldier.location.label;
+
+  const statusText: Record<string, string> = {
+    ok: t.nominal,
+    warn: t.elevatedStatus,
+    danger: t.criticalStatus,
+    offline: t.offlineStatus,
+  };
+
+  const BackArrow = dir === "rtl" ? ArrowRight : ArrowLeft;
+
   return (
     <div className="min-h-screen">
       <header className="border-b-2 border-primary/40 bg-card/80 backdrop-blur">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-5">
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-6 py-5">
           <Link
             to="/"
             className="flex items-center gap-2 font-mono text-xs tracking-widest text-muted-foreground hover:text-primary"
           >
-            <ArrowLeft className="h-4 w-4" /> RETURN TO COMMAND
+            <BackArrow className="h-4 w-4" /> {t.returnToCommand}
           </Link>
           <div className="flex items-center gap-3">
             {soldier.liveDataUrl && (
@@ -82,14 +102,15 @@ function SoldierDetail() {
               }`}>
                 <Radio className={`h-3 w-3 ${isLive ? "animate-pulse" : ""}`} />
                 <span className="font-mono text-[10px] tracking-widest">
-                  {live.error ? "LINK DOWN" : isLive ? "LIVE STREAM" : "CONNECTING…"}
+                  {live.error ? t.linkDown : isLive ? t.liveStream : t.connecting}
                 </span>
               </div>
             )}
             <span className={`h-2.5 w-2.5 rounded-full ${bg} ${soldier.status === "ok" ? "pulse-ok" : ""}`} />
             <span className={`font-mono text-xs font-bold tracking-widest ${c}`}>
-              {statusLabel[soldier.status]}
+              {statusText[soldier.status]}
             </span>
+            <SettingsToggles />
           </div>
         </div>
       </header>
@@ -101,13 +122,13 @@ function SoldierDetail() {
           </div>
           <div className="flex-1">
             <div className="font-mono text-[10px] tracking-[0.35em] text-primary">
-              PERSONNEL FILE · {soldier.id} · {soldier.unit}
+              {t.personnelFile} · {soldier.id} · {soldier.unit}
             </div>
-            <h1 className="text-4xl font-bold uppercase tracking-wider text-foreground">
-              {soldier.callsign}
+            <h1 className="text-4xl font-bold tracking-tight text-foreground">
+              {name}
             </h1>
             <div className="mt-1 text-muted-foreground">
-              {soldier.rank} · {soldier.name}
+              {rank}
             </div>
           </div>
         </section>
@@ -117,11 +138,10 @@ function SoldierDetail() {
             <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-status-danger" />
             <div className="text-sm">
               <div className="font-mono text-xs font-bold tracking-widest text-status-danger">
-                LIVE LINK ERROR
+                {t.liveLinkError}
               </div>
               <div className="mt-1 text-muted-foreground">
-                Could not reach <span className="font-mono">{soldier.liveDataUrl}</span> ({live.error}).
-                Make sure the iPad is on the same Wi-Fi as the vest, and that the dashboard is opened over <span className="font-mono">http://</span> (not https).
+                {t.liveLinkErrorDesc(soldier.liveDataUrl, live.error)}
               </div>
             </div>
           </div>
@@ -130,15 +150,15 @@ function SoldierDetail() {
         <section className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <Vital
             icon={<Heart className="h-5 w-5" />}
-            label="Heart Rate"
+            label={t.heartRate}
             value={offline ? "--" : `${heartRate}`}
-            unit="bpm"
+            unit={t.bpm}
             accent={c}
             live={isLive}
           />
           <Vital
             icon={<Thermometer className="h-5 w-5" />}
-            label="Body Temp"
+            label={t.bodyTemp}
             value={offline ? "--" : bodyTemp.toFixed(1)}
             unit="°C"
             accent={c}
@@ -146,15 +166,15 @@ function SoldierDetail() {
           />
           <Vital
             icon={<Activity className="h-5 w-5" />}
-            label="Blood Pressure"
+            label={t.bloodPressure}
             value={offline ? "--" : `${bp.systolic}/${bp.diastolic}`}
-            unit="mmHg"
+            unit={t.mmHg}
             accent={c}
             live={isLive}
           />
           <Vital
             icon={<BatteryMedium className="h-5 w-5" />}
-            label="Vest Battery"
+            label={t.vestBattery}
             value={offline ? "--" : `${soldier.battery}`}
             unit="%"
             accent={
@@ -170,8 +190,8 @@ function SoldierDetail() {
         <section className="mt-4">
           <Vital
             icon={<MapPin className="h-5 w-5" />}
-            label="Location"
-            value={soldier.location.label}
+            label={t.location}
+            value={locationLabel}
             unit={offline ? "" : `${soldier.location.lat.toFixed(4)}, ${soldier.location.lng.toFixed(4)}`}
             accent="text-foreground"
             small
@@ -193,11 +213,11 @@ function SoldierDetail() {
                 <div className="font-mono text-[10px] tracking-widest text-primary">
                   ESP32-CAM
                 </div>
-                <div className="text-lg font-bold uppercase tracking-wider text-foreground">Live Feed</div>
+                <div className="text-lg font-bold uppercase tracking-wider text-foreground">{t.liveFeed}</div>
               </div>
             </div>
             <p className="mt-4 text-sm text-muted-foreground">
-              Open the on-vest camera stream in a new window.
+              {t.liveFeedDesc}
             </p>
             <div className="mt-3 font-mono text-xs text-muted-foreground">
               {soldier.liveCamUrl}
@@ -216,13 +236,13 @@ function SoldierDetail() {
               </div>
               <div>
                 <div className="font-mono text-[10px] tracking-widest text-muted-foreground">
-                  PLAYBACK
+                  {t.playback}
                 </div>
-                <div className="text-lg font-bold uppercase tracking-wider text-foreground">Last 10 min</div>
+                <div className="text-lg font-bold uppercase tracking-wider text-foreground">{t.last10}</div>
               </div>
             </div>
             <p className="mt-4 text-sm text-muted-foreground">
-              Replay the most recent recorded buffer from the vest.
+              {t.playbackDesc}
             </p>
           </a>
         </section>
@@ -251,7 +271,7 @@ function Vital({
   return (
     <div className="relative rounded-sm border border-border bg-card p-5">
       {live && (
-        <span className="absolute right-3 top-3 flex items-center gap-1 font-mono text-[9px] tracking-widest text-status-ok">
+        <span className="absolute end-3 top-3 flex items-center gap-1 font-mono text-[9px] tracking-widest text-status-ok">
           <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-status-ok" />
           LIVE
         </span>
