@@ -137,6 +137,10 @@ export const translations: Record<Lang, TranslationStrings> = {
     mmHg: "مم زئبق",
     sectorOnline: "في الخدمة",
     signalLost: "انقطعت الإشارة",
+    sosTitle: "نداء استغاثة · طلب مساعدة",
+    sosBanner: "الجندي فعّل نداء الاستغاثة",
+    sosDesc: "تم الضغط على زر الاستغاثة في السترة. الاستجابة الفورية مطلوبة.",
+    sosBadge: "استغاثة",
   },
 };
 
