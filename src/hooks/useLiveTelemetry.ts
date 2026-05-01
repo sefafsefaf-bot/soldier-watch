@@ -5,6 +5,8 @@ export interface LiveTelemetry {
   heartRate: number;
   bodyTemp: number;
   bp: BloodPressure;
+  sos: boolean;
+  rawStatus?: string;
 }
 
 export interface LiveTelemetryState {
@@ -38,16 +40,26 @@ export function useLiveTelemetry(url: string | undefined, intervalMs = 2000): Li
       try {
         const res = await fetch(url, { cache: "no-store" });
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const json = (await res.json()) as Partial<LiveTelemetry>;
+        const json = (await res.json()) as Record<string, unknown>;
         if (cancelled) return;
+        const bp = (json.bp ?? {}) as Record<string, unknown>;
+        const rawStatus = typeof json.status === "string" ? json.status : undefined;
+        const sosFlag =
+          json.sos === true ||
+          json.sos === 1 ||
+          json.sos === "1" ||
+          (typeof rawStatus === "string" &&
+            /ask\s*for\s*help|sos|help/i.test(rawStatus));
         setState({
           data: {
             heartRate: Number(json.heartRate ?? 0),
             bodyTemp: Number(json.bodyTemp ?? 0),
             bp: {
-              systolic: Number(json.bp?.systolic ?? 0),
-              diastolic: Number(json.bp?.diastolic ?? 0),
+              systolic: Number(bp.systolic ?? 0),
+              diastolic: Number(bp.diastolic ?? 0),
             },
+            sos: !!sosFlag,
+            rawStatus,
           },
           error: null,
           loading: false,

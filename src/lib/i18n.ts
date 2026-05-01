@@ -41,6 +41,10 @@ export interface TranslationStrings {
   mmHg: string;
   sectorOnline: string;
   signalLost: string;
+  sosTitle: string;
+  sosBanner: string;
+  sosDesc: string;
+  sosBadge: string;
 }
 
 export const translations: Record<Lang, TranslationStrings> = {
@@ -86,6 +90,10 @@ export const translations: Record<Lang, TranslationStrings> = {
     mmHg: "mmHg",
     sectorOnline: "On-duty",
     signalLost: "Signal lost",
+    sosTitle: "SOS · HELP REQUESTED",
+    sosBanner: "SOLDIER ACTIVATED SOS",
+    sosDesc: "Vest SOS button pressed. Immediate response required.",
+    sosBadge: "SOS",
   },
   ar: {
     ministry: "وزارة الدفاع · للاستخدام الرسمي",
@@ -129,6 +137,10 @@ export const translations: Record<Lang, TranslationStrings> = {
     mmHg: "مم زئبق",
     sectorOnline: "في الخدمة",
     signalLost: "انقطعت الإشارة",
+    sosTitle: "نداء استغاثة · طلب مساعدة",
+    sosBanner: "الجندي فعّل نداء الاستغاثة",
+    sosDesc: "تم الضغط على زر الاستغاثة في السترة. الاستجابة الفورية مطلوبة.",
+    sosBadge: "استغاثة",
   },
 };
 
