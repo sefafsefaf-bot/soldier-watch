@@ -41,6 +41,10 @@ export interface TranslationStrings {
   mmHg: string;
   sectorOnline: string;
   signalLost: string;
+  sosTitle: string;
+  sosBanner: string;
+  sosDesc: string;
+  sosBadge: string;
 }
 
 export const translations: Record<Lang, TranslationStrings> = {
