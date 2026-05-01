@@ -5,6 +5,8 @@ export interface LiveTelemetry {
   heartRate: number;
   bodyTemp: number;
   bp: BloodPressure;
+  sos: boolean;
+  rawStatus?: string;
 }
 
 export interface LiveTelemetryState {
