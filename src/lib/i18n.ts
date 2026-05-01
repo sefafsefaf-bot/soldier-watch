@@ -90,6 +90,10 @@ export const translations: Record<Lang, TranslationStrings> = {
     mmHg: "mmHg",
     sectorOnline: "On-duty",
     signalLost: "Signal lost",
+    sosTitle: "SOS · HELP REQUESTED",
+    sosBanner: "SOLDIER ACTIVATED SOS",
+    sosDesc: "Vest SOS button pressed. Immediate response required.",
+    sosBadge: "SOS",
   },
   ar: {
     ministry: "وزارة الدفاع · للاستخدام الرسمي",
