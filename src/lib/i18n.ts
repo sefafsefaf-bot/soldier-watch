@@ -2,6 +2,9 @@ export type Lang = "en" | "ar";
 
 export interface TranslationStrings {
   ministry: string;
+  commandCenter: string;
+  commandCenterShort: string;
+  topBarMotto: string;
   appTitle: string;
   appSubtitle: string;
   classification: string;
@@ -50,6 +53,9 @@ export interface TranslationStrings {
 export const translations: Record<Lang, TranslationStrings> = {
   en: {
     ministry: "MINISTRY OF DEFENSE · OFFICIAL USE",
+    commandCenter: "LAND OPERATIONS & INTELLIGENCE CENTER",
+    commandCenterShort: "LAND OPS & INTEL",
+    topBarMotto: "COMMAND · CONTROL · INTELLIGENCE",
     appTitle: "SENTINEL",
     appSubtitle: "Vest Telemetry Command",
     classification: "CLASSIFICATION: RESTRICTED · CLEARANCE LEVEL III",
@@ -97,9 +103,12 @@ export const translations: Record<Lang, TranslationStrings> = {
   },
   ar: {
     ministry: "وزارة الدفاع · للاستخدام الرسمي",
-    appTitle: "سنتينل",
-    appSubtitle: "قيادة قياس السترة",
-    classification: "التصنيف: مقيد · مستوى التصريح الثالث",
+    commandCenter: "مركز العمليات والاستخبارات البرية",
+    commandCenterShort: "العمليات والاستخبارات البرية",
+    topBarMotto: "قيادة · سيطرة · استخبارات",
+    appTitle: "الحارس",
+    appSubtitle: "قيادة قياس السترة الميدانية",
+    classification: "التصنيف: سري · مستوى التصريح الثالث",
     secureLink: "اتصال آمن · مباشر",
     active: "نشط",
     elevated: "مرتفع",
