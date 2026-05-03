@@ -18,6 +18,13 @@ function Dashboard() {
 
   return (
     <div className="min-h-screen">
+      <div className="border-b border-primary/40 bg-primary text-primary-foreground">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-6 py-1.5 font-mono text-[10px] tracking-[0.3em]">
+          <span>{t.ministry}</span>
+          <span className="hidden sm:inline">{t.commandCenter}</span>
+          <span>{t.topBarMotto}</span>
+        </div>
+      </div>
       <header className="border-b-2 border-primary/40 bg-card/80 backdrop-blur">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-6 py-5">
           <div className="flex items-center gap-4">
