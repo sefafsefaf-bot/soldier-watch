@@ -35,11 +35,11 @@ function Dashboard() {
               <div className="font-mono text-[10px] tracking-[0.35em] text-primary">
                 {t.ministry}
               </div>
-              <h1 className="text-xl font-bold uppercase tracking-wider text-foreground">
-                {t.appTitle} <span className="text-primary">//</span> {t.appSubtitle}
+              <h1 className="text-xl font-bold uppercase tracking-wider text-foreground sm:text-2xl">
+                {t.commandCenter}
               </h1>
               <div className="font-mono text-[10px] tracking-widest text-muted-foreground">
-                {t.classification}
+                {t.classification} · {t.appTitle}
               </div>
             </div>
           </div>
